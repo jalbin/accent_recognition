@@ -8,7 +8,7 @@ Project| ACCENT RECOGNITION
 
 
 Native and non-native speakers of English read the same paragraph and
-are carefully transcribed. `<br>`{=html}Our goal is to compare, analyze
+are carefully transcribed. Our goal is to compare, analyze
 and predict the accents of different English speakers.
 
 
