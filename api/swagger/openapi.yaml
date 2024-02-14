@@ -1,0 +1,43 @@
+openapi: 3.0.0
+info:
+  title: Swagger
+  version: 1.0.0
+paths:
+  /speaker_info/{speaker_id}:
+    get:
+      summary: Get speaker information
+      parameters:
+        - in: path
+          name: speaker_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  native_language:
+                    type: string
+                  age:
+                    type: number
+                  sex:
+                    type: string
+        '404':
+          description: Speaker not found
+  /locations:
+    get:
+      summary: Get all locations
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
