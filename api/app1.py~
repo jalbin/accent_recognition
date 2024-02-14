@@ -26,7 +26,7 @@ app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 @app.route('/speaker_info/<int:speaker_id>')
 def get_speaker_info(speaker_id):
     try:
-        query = "SELECT 'native language', age, sex FROM saa_bios WHERE speaker_id = %s"
+        query = "SELECT native_language, age, sex FROM saa_bios WHERE speaker_id = %s"
         cursor.execute(query, (speaker_id,))
         result = cursor.fetchone()
         if result:
