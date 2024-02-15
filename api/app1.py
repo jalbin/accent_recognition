@@ -1,11 +1,10 @@
-from flask import Flask, jsonify, request
-from flask_swagger_ui import get_swaggerui_blueprint
+from flask import Flask, jsonify
 import mysql.connector
-import pymysql
 import os
 
 app = Flask(__name__)
 
+# Establish connection to MySQL database
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -14,44 +13,37 @@ db = mysql.connector.connect(
 )
 cursor = db.cursor()
 
-SWAGGER_URL = '/swagger'
-API_URL = '/static/openapi.yaml'
-swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={'app_name': "Swagger"}
-)
-app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
-
+# Define Flask routes
 @app.route('/speaker_info/<int:speaker_id>')
 def get_speaker_info(speaker_id):
     try:
-        query = "SELECT 'native language', age, sex FROM saa_bios WHERE speaker_id = %s"
+        # Execute SQL query to retrieve speaker information
+        query = "SELECT 'native language', age, sex FROM accents.saa_bios as acc WHERE speaker_id = %s"
         cursor.execute(query, (speaker_id,))
         result = cursor.fetchone()
+        
+        # Check if speaker information exists
         if result:
+            # Construct speaker_info dictionary
             speaker_info = {
-                'native_language': result[0],
+                'native language': result[0],
                 'age': result[1],
                 'sex': result[2]
             }
+            
+            # Log speaker_info object
+            app.logger.info(f"Speaker Info: {speaker_info}")
+            
+            # Return speaker_info as JSON response
             return jsonify(speaker_info)
         else:
+            # Return message if speaker not found
             return jsonify({'message': 'Speaker not found'}), 404
     except Exception as e:
+        # Return error message if an exception occurs
         return jsonify({'message': str(e)}), 500
 
-@app.route('/locations')
-def get_locations():
-    try:
-        query = "SELECT location FROM locations"
-        cursor.execute(query)
-        results = cursor.fetchall()
-        locations = [result[0] for result in results]
-        return jsonify(locations)
-    except Exception as e:
-        return jsonify({'message': str(e)}), 500
-
+# Run Flask app
 if __name__ == '__main__':
     app.run(port=8080)
 

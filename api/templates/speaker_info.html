@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speaker Information</title>
+</head>
+<body>
+    <h1>Speaker Information</h1>
+    <div id="speakerInfo"></div>
+
+    <script>
+        // Function to make AJAX request to Flask route and update HTML content
+        function fetchSpeakerInfo(speakerId) {
+            fetch(`/speaker_info/${speakerId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update HTML content with speaker information
+                document.getElementById('speakerInfo').innerHTML = `
+                    <p>Native Language: ${data.'native language'}</p>
+                    <p>Age: ${data.age}</p>
+                    <p>Sex: ${data.sex}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Error fetching speaker information:', error);
+            });
+        }
+
+        // Call fetchSpeakerInfo function with speakerId
+        fetchSpeakerInfo(7); // Replace 7 with the desired speaker ID
+    </script>
+</body>
+</html>
+

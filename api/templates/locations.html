@@ -1,0 +1,31 @@
+<!-- locations.html -->
+{% extends "base.html" %}
+
+{% block title %}Locations - My Website{% endblock %}
+
+{% block content %}
+    <h2>Locations</h2>
+    <ul>
+        {% for location in locations %}
+            <li>{{ location }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Pagination links if available -->
+    {% if has_prev or has_next %}
+        <div>
+            {% if has_prev %}
+                <a href="?page={{ prev_page }}">Previous</a>
+            {% endif %}
+            
+            {% if has_prev and has_next %}
+                |  <!-- Separator if both previous and next links are present -->
+            {% endif %}
+            
+            {% if has_next %}
+                <a href="?page={{ next_page }}">Next</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
+
